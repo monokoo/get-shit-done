@@ -2589,6 +2589,18 @@ function writeManifest(configDir, runtime = 'claude') {
       }
     }
   }
+  // Track hook files so saveLocalPatches() can detect user modifications
+  // Hooks are only installed for runtimes that use settings.json (not Codex/Copilot)
+  if (!isCodex && !isCopilot) {
+    const hooksDir = path.join(configDir, 'hooks');
+    if (fs.existsSync(hooksDir)) {
+      for (const file of fs.readdirSync(hooksDir)) {
+        if (file.startsWith('gsd-') && file.endsWith('.js')) {
+          manifest.files['hooks/' + file] = fileHash(path.join(hooksDir, file));
+        }
+      }
+    }
+  }
 
   fs.writeFileSync(path.join(configDir, MANIFEST_NAME), JSON.stringify(manifest, null, 2));
   return manifest;
