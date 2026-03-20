@@ -650,11 +650,11 @@ mkdir -p ".planning/phases/${padded_phase}-${phase_slug}"
 ## Implementation Decisions
 
 ### [Category 1 that was discussed]
-- [Decision or preference captured]
-- [Another decision if applicable]
+- **D-01:** [Decision or preference captured]
+- **D-02:** [Another decision if applicable]
 
 ### [Category 2 that was discussed]
-- [Decision or preference captured]
+- **D-03:** [Decision or preference captured]
 
 ### Claude's Discretion
 [Areas where user said "you decide" — note that Claude has flexibility here]
