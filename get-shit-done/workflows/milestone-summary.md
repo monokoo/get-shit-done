@@ -27,7 +27,7 @@ Determine whether the milestone is **archived** or **current**:
 ```
 ROADMAP_PATH=".planning/milestones/v${VERSION}-ROADMAP.md"
 REQUIREMENTS_PATH=".planning/milestones/v${VERSION}-REQUIREMENTS.md"
-AUDIT_PATH=".planning/v${VERSION}-MILESTONE-AUDIT.md"
+AUDIT_PATH=".planning/milestones/v${VERSION}-MILESTONE-AUDIT.md"
 ```
 
 **Current/in-progress milestone** (no archive yet):
@@ -36,6 +36,8 @@ ROADMAP_PATH=".planning/ROADMAP.md"
 REQUIREMENTS_PATH=".planning/REQUIREMENTS.md"
 AUDIT_PATH=".planning/v${VERSION}-MILESTONE-AUDIT.md"
 ```
+
+Note: The audit file moves to `.planning/milestones/` on archive (per `complete-milestone` workflow). Check both locations as a fallback.
 
 **Always available:**
 ```
@@ -62,6 +64,8 @@ This returns phase metadata. For each phase in the milestone scope:
 - Read `{phase_dir}/{padded}-RESEARCH.md` if it exists — note what was researched
 
 Track which phases have which artifacts.
+
+**If no phase directories exist** (empty milestone or pre-build state): skip to Step 5 and generate a minimal summary noting "No phases have been executed yet." Do not error — the summary should still capture PROJECT.md and ROADMAP.md content.
 
 ## Step 4: Gather Git Statistics
 
@@ -153,8 +157,18 @@ Present as a bulleted list of decisions with brief rationale:
 - **Contributors:** {list}
 ```
 
-## Step 6: Commit
+## Step 6: Write and Commit
 
+**Overwrite guard:** If `.planning/reports/MILESTONE_SUMMARY-v${VERSION}.md` already exists, ask the user:
+> "A milestone summary for v{VERSION} already exists. Overwrite it, or view the existing one?"
+If "view": display existing file and skip to Step 8 (interactive mode). If "overwrite": proceed.
+
+Create the reports directory if needed:
+```bash
+mkdir -p .planning/reports
+```
+
+Write the summary, then commit:
 ```bash
 gsd-tools.cjs commit "docs(v${VERSION}): generate milestone summary for onboarding" \
   --files ".planning/reports/MILESTONE_SUMMARY-v${VERSION}.md"
