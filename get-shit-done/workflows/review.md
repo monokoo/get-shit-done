@@ -62,7 +62,7 @@ fi
 
 Rules:
 - If `SELF_CLI="none"` → invoke ALL available CLIs (no skip)
-- If `SELF_CLI="claude"` → skip claude, use gemini/codex
+- If `SELF_CLI="claude"` → skip claude, use all other available CLIs
 - If `SELF_CLI="auto"` → the executing AI identifies itself and skips its own CLI
 - At least one DIFFERENT CLI must be available for the review to proceed.
 </step>
@@ -148,7 +148,7 @@ gemini -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" 2>/dev/null > /tmp/gsd-revi
 
 **Claude (separate session):**
 ```bash
-claude -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" --no-input 2>/dev/null > /tmp/gsd-review-claude-{phase}.md
+claude -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" 2>/dev/null > /tmp/gsd-review-claude-{phase}.md
 ```
 
 **Codex:**
